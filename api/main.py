@@ -22,7 +22,7 @@ async def root():
 
 @app.get("/users")
 async def root():
-    df = pd.read_csv('./users.csv')
+    df = pd.read_csv('../users.csv')
     data = []
     for i, row in df.iterrows():
         userId = row['userId']
