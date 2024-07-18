@@ -38,15 +38,12 @@ def view_users():
     for row in rows:
         print(dict(row))
 
-def get_max_user_id():
-    conn = sqlite3.connect('sunshine-movies.db')
-    cursor = conn.cursor()
+def get_max_user_id(cursor):
     
     cursor.execute("SELECT max(user_id) FROM users")
     row = cursor.fetchone()  # Use fetchone() since max(user_id) returns a single value
     max_user_id = row[0] if row and row[0] is not None else -1  # Handle case where table is empty
     
-    conn.close()
     return max_user_id
 
 

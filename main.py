@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sqlite3
 from database import get_db_connection, get_max_user_id
-# import numpy as np
+import numpy as np
 
 import pandas as pd
 import json
@@ -47,10 +47,10 @@ async def get_user(username: str = Query(..., alias="username")):
 async def post_user(username: str = Query(..., alias='username'),
                     password: str = Query(..., alias='password')):
     
-    # avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed='+ str(np.random.randint(100))
+    avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed='+ str(np.random.randint(100))
     conn = get_db_connection()
     cursor = conn.cursor()
-    # user_id = get_max_user_id() + 1
+    user_id = get_max_user_id(cursor) + 1
     # cursor.execute('INSERT or IGNORE INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
     # conn.commit()
     conn.close()
