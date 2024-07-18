@@ -44,7 +44,7 @@ async def get_user(username: str = Query(..., alias="username")):
         raise HTTPException(status_code=404, detail="User not found")
     return {"user_id": row["user_id"], "username": row["username"], "password": row["password"] ,"avatar": row["avatar"]}
 
-@app.post("/users/")
+@app.post("/user/")
 async def post_user(username: str = Query(..., alias='username'),
                     password: str = Query(..., alias='password')):
     
