@@ -51,7 +51,7 @@ async def post_user(username: str = Query(..., alias='username'),
     conn = get_db_connection()
     cursor = conn.cursor()
     user_id = get_max_user_id(cursor) + 1
-    # cursor.execute('INSERT or IGNORE INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
-    # conn.commit()
+    cursor.execute('INSERT or IGNORE INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
+    conn.commit()
     conn.close()
     return {'message': 'ok'}
