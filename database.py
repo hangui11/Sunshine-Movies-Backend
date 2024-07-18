@@ -3,7 +3,7 @@ import sqlite3
 import numpy as np
 
 def get_db_connection():
-    conn = sqlite3.connect('sunshine-movies.db')
+    conn = sqlite3.connect('sunshine-movies.db?mode=rw', uri=True)
     conn.row_factory = sqlite3.Row  # This allows us to access columns by name
     return conn
 
