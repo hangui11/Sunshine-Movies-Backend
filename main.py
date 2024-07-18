@@ -43,15 +43,30 @@ async def get_user(username: str = Query(..., alias="username")):
         raise HTTPException(status_code=404, detail="User not found")
     return {"user_id": row["user_id"], "username": row["username"], "password": row["password"] ,"avatar": row["avatar"]}
 
-@app.post("/user/")
+@app.post("/users/")
 async def post_user(username: str = Query(..., alias='username'),
                     password: str = Query(..., alias='password')):
     
     avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed='+ str(np.random.randint(100))
     conn = get_db_connection()
-    cursor = conn.cursor()
-    user_id = get_max_user_id(cursor) + 1
-    cursor.execute('INSERT or IGNORE INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
-    conn.commit()
-    conn.close()
-    return {'message': 'ok'}
+    
+    try:
+        cursor = conn.cursor()
+        user_id = get_max_user_id() + 1
+        cursor.execute('INSERT INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
+        conn.commit()
+        conn.close()
+        return {"user_id": user_id, "username": username, "password": password, "avatar": avatar}
+    
+    except sqlite3.Error as e:
+        conn.rollback()  # Rollback in case of error
+        print(f"SQLite error encountered: {e}")
+        raise HTTPException(status_code=500, detail="Error inserting user into database")
+    
+    except Exception as e:
+        conn.rollback()  # Rollback in case of any other unexpected error
+        print(f"Unexpected error encountered: {e}")
+        raise HTTPException(status_code=500, detail="Unexpected error")
+    
+    finally:
+        conn.close()
