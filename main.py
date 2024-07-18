@@ -52,7 +52,7 @@ async def post_user(username: str = Query(..., alias='username'),
     
     try:
         cursor = conn.cursor()
-        user_id = get_max_user_id() + 1
+        user_id = get_max_user_id(cursor) + 1
         cursor.execute('INSERT INTO users(user_id, username, password, avatar) VALUES (?, ?, ?, ?)', (user_id, username, password, avatar))
         conn.commit()
         conn.close()
