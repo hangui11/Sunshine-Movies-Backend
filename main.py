@@ -33,10 +33,10 @@ class User(BaseModel):
         orm_mode = True
 
 @app.get("/users/", response_model=User)
-def get_user(user_id: int = Query(..., alias="user_id")):
+def get_user(username: str = Query(..., alias="username")):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+    cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
     row = cursor.fetchone()
     conn.close()
     if row is None:
