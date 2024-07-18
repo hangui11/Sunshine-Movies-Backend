@@ -1,3 +1,2 @@
-userId,userName,password,role
-admin,admin,admin,admin
-1,dummy,123,user
+user_id,username,password,avatar,role
+0,admin,admin,https://api.dicebear.com/9.x/adventurer/svg?seed=1,admin

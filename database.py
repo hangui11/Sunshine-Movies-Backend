@@ -1,9 +1,10 @@
 # database.py
 import sqlite3
 import numpy as np
+import pandas as pd
 
 def get_db_connection():
-    conn = sqlite3.connect('sunshine-movies.db?mode=rw', uri=True)
+    conn = sqlite3.connect('sunshine-movies.db', uri=True)
     conn.row_factory = sqlite3.Row  # This allows us to access columns by name
     return conn
 
@@ -50,4 +51,11 @@ def get_max_user_id(cursor):
 # Run this function to initialize the database
 if __name__ == "__main__":
     #  view_users()
-    print(get_max_user_id())
+    users = pd.read_csv('./users.csv')
+    username = 'admin'
+    user = users[users['username'] == username]
+    if not user.empty:
+        user_dict = user.to_dict('records')[0]
+        for key, value in user_dict.items():
+            print(f"{key}: {value}")
+    
