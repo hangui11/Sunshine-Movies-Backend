@@ -45,4 +45,4 @@ async def models(model: str, ratings: str = Query(...), users: str = Query(...),
         trivial = Trivial(df)
         recommendation_movieId = trivial.topMovieTrivial
     print(recommendation_movieId)
-    return recommendation_movieId
+    return {"result": recommendation_movieId}
