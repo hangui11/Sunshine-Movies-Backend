@@ -8,8 +8,6 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 code_development_dir = os.path.dirname(os.path.dirname(current_dir))
 sys.path.append(code_development_dir)
 
-from utils import *
-
 class UserToUser:
     '''
     This method initializes the UserToUser class with the necessary data and parameters,
@@ -179,55 +177,5 @@ class UserToUser:
 
         self.recommendations = recommendations
         return recommendations 
-    
-    '''
-    This function prints the top K recommendations
-    '''
-    def printTopRecommendations(self):
-        for recomendation in self.recommendations[:self.topK]:
-            rec_movie = self.movies[self.movies["movieId"]  == recomendation[0]]
-            print (" Recomendation: Movie:{} (Genre: {})".format(rec_movie["title"].values[0], rec_movie["genres"].values[0]))
 
-    '''
-    Method to compute the similarity between predictions and the validation dataset,
-    which is the same as the similarity between the validation movies genres and the recommended movies genres
-    '''
-    def validation(self, ratings_val, target_user_idx):
-        # Validation
-        matrixmpa_genres, validationMoviesGenress = validationMoviesGenres(self.movies, ratings_val, target_user_idx)
-
-        topMoviesUser = list(list(zip(*self.recommendations[:self.topK]))[0])
-        recommendsMoviesUser = matrixmpa_genres.loc[topMoviesUser]
-        
-        # Compute the similarity between the validation movies genres and the recommended movies genres
-        sim = cosinuSimilarity(validationMoviesGenress, recommendsMoviesUser)
-        # print(' Similarity with user-to-user recommender: ' + str(sim))
-        return sim
  
-if __name__ == "__main__":
-    
-    # Load the dataset
-    path_to_ml_latest_small = './ml-latest-small/'
-    dataset = load_dataset_from_source(path_to_ml_latest_small)
-
-    # Ratings data
-    val_movies = 5
-    ratings_train, ratings_val = split_users(dataset["ratings.csv"], val_movies)
-    
-    # Create matrix between user and movies 
-    movies_idx = dataset["movies.csv"]["movieId"]
-    users_idy = list(set(ratings_train["userId"].values))
-    
-    start = time.time()
-
-    # 387, 109
-    target_user_idx = 392
-    print('The prediction for user ' + str(target_user_idx) + ':')
-
-    userToUser = UserToUser(ratings_train, dataset['movies.csv'], users_idy)
-    recommendations = userToUser.user_based_recommender(target_user_idx)
-    userToUser.printTopRecommendations()
-    userToUser.validation(ratings_val, target_user_idx)
-
-    end = time.time()
-    print("The execution time: " + str(end-start) + " seconds")
