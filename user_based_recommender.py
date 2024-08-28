@@ -12,10 +12,9 @@ class UserToUser:
      - self.movies: Stores a dataframe with the movies information
      - self.matrix: Stores the matrix between users and items with their ratings
     '''
-    def __init__(self, ratings_train, movies, users, k=5) -> None:
+    def __init__(self, ratings_train, users, k=10) -> None:
         self.ratings_train = ratings_train
         self.topK = k
-        self.movies = movies
         self.users = users
         self.matrix = self.generate_users_matrix()
 
