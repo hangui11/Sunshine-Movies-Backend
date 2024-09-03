@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 # from trivial_recommender import Trivial
