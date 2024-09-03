@@ -1,11 +1,11 @@
 from typing import List
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
-from trivial_recommender import Trivial
-from user_based_recommender import UserToUser
-import numpy as np
-import pandas as pd
-import json
+# from trivial_recommender import Trivial
+# from user_based_recommender import UserToUser
+# import numpy as np
+# import pandas as pd
+# import json
 app = FastAPI()
 
 app.add_middleware(
