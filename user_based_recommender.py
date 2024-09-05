@@ -26,6 +26,7 @@ class UserToUser:
         ratingsMean = {}
         matrix = self.matrix
         for k, v in matrix.items():
+            # if len(v) == 0: ratingsMean[k] = 0
             ratingsMean[k] = sum(v.values())/len(v)
         return ratingsMean
 
@@ -45,7 +46,7 @@ class UserToUser:
             rate = {}
             for j in data:
                 rate[j[0]] = j[1]
-            m[i] = rate
+            if len(rate) != 0: m[i] = rate
         return m 
     
     '''
@@ -109,6 +110,7 @@ class UserToUser:
     '''
     def user_based_recommender(self, target_user_idx):
         matrix = self.matrix
+        print(matrix)
         target_user = matrix[target_user_idx]
         recommendations = []
         # Compute the similarity between  the target user and each other user in the matrix. 
@@ -166,9 +168,9 @@ class UserToUser:
         for i in range(len(recommendations)):
             if (max - min != 0): interest = (recommendations[i][1] - min) / (max - min)
             else: interest = 1.0
-            recommendations[i] = (recommendations[i][0], interest)
+            recommendations[i] = (recommendations[i][0])
 
         self.recommendations = recommendations
-        return recommendations 
+        return recommendations[0:self.topK] 
 
  
